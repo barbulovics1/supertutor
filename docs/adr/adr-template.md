@@ -1,7 +1,7 @@
 # [Kratek naslov odločitve]
 
 ## Status
-Sprejeto
+[Predlagano / Sprejeto / Zavrnjeno / Zastarelo]
 
 ## Kontekst in problem
 [Kakšen problem rešujemo? Kaj je zahtevalo odločitev?]
