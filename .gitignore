@@ -1,0 +1,13 @@
+# macOS
+.DS_Store
+
+# Node.js
+node_modules/
+.env
+
+# Logs
+*.log
+
+# SQLite baza (lokalni podatki, ne spadajo v repozitorij)
+*.sqlite
+*.sqlite3
