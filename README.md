@@ -20,5 +20,3 @@ Vsa projektna dokumentacija se nahaja v mapi [`docs/`](./docs):
 - [Uporabniške zgodbe](docs/05-uporabniske-zgodbe.md)
 - [Wireframes](docs/06-wireframes.md)
 - [Arhitekturne odločitve (ADR)](docs/adr)
-
-##test
