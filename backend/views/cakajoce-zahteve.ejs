@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+  <meta charset="UTF-8">
+  <title>Čakajoče zahteve - SuperTutor</title>
+</head>
+<body>
+  <h1>Čakajoče zahteve</h1>
+  <p><a href="/odjava">Odjava</a></p>
+
+  <% if (zahteve.length === 0) { %>
+    <p>Trenutno ni čakajočih zahtev.</p>
+  <% } %>
+
+  <ul>
+    <% zahteve.forEach(z => { %>
+      <li>
+        <strong><%= z.datum %>, <%= z.zacetek %>–<%= z.konec %></strong><br>
+        Študent: <%= z.student_ime %> <%= z.student_priimek %><br>
+        Predmet: <%= z.predmet_naziv %><br>
+        Teme: <%= z.teme %><br>
+        Način izvedbe: <%= z.nacin_izvedbe %> (<%= z.lokacija_kontakt %>)
+      </li>
+      <hr>
+    <% }) %>
+  </ul>
+</body>
+</html>

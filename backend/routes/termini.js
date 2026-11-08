@@ -49,4 +49,9 @@ router.post('/tutor/dostopnost/:id/izbrisi', zahtevajTutorja, (req, res) => {
   res.redirect('/tutor/dostopnost');
 });
 
+router.get('/tutor/zahteve', zahtevajTutorja, (req, res) => {
+  const zahteve = termin.najdiCakajoceZahteve(req.session.uporabnik.id);
+  res.render('cakajoce-zahteve', { zahteve });
+});
+
 module.exports = router;
