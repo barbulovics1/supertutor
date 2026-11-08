@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const termin = require('../models/termin');
 const obvestilo = require('../models/obvestilo');
+const zapisek = require('../models/zapisek');
 
 function zahtevajTutorja(req, res, next) {
   if (!req.session.uporabnik || req.session.uporabnik.vloga !== 'tutor') {
@@ -66,6 +67,17 @@ router.post('/tutor/zahteve/:id/potrdi', zahtevajTutorja, (req, res) => {
 router.post('/tutor/zahteve/:id/zavrni', zahtevajTutorja, (req, res) => {
   termin.zavrniZahtevo(req.params.id, req.session.uporabnik.id);
   res.redirect('/tutor/zahteve');
+});
+
+router.get('/tutor/priprava/:terminId', zahtevajTutorja, (req, res) => {
+  const t = termin.najdiPotrjenTermin(req.params.terminId, req.session.uporabnik.id);
+
+  if (!t) {
+    return res.redirect('/tutor/zahteve');
+  }
+
+  const zapiski = zapisek.najdiZapiskeZaStudenta(t.student_id);
+  res.render('priprava-na-srecanje', { termin: t, zapiski });
 });
 
 module.exports = router;

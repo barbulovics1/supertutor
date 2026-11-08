@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+  <meta charset="UTF-8">
+  <title>Priprava na srečanje - SuperTutor</title>
+</head>
+<body>
+  <h1>Priprava na srečanje</h1>
+  <p><a href="/tutor/zahteve">Nazaj</a></p>
+
+  <p><strong>Datum:</strong> <%= termin.datum %>, <%= termin.zacetek %>–<%= termin.konec %></p>
+  <p><strong>Študent:</strong> <%= termin.student_ime %> <%= termin.student_priimek %></p>
+  <p><strong>Predmet:</strong> <%= termin.predmet_naziv %></p>
+  <p><strong>Teme:</strong> <%= termin.teme %></p>
+
+  <h2>Prejšnji zapiski za tega študenta</h2>
+  <% if (zapiski.length === 0) { %>
+    <p>Ni prejšnjih zapiskov.</p>
+  <% } else { %>
+    <ul>
+      <% zapiski.forEach(z => { %>
+        <li><%= z.ustvarjeno_ob %>: <%= z.besedilo %></li>
+      <% }) %>
+    </ul>
+  <% } %>
+</body>
+</html>
