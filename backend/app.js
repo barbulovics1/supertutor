@@ -5,6 +5,7 @@ require('./models/migracija'); // ustvari tabele ob zagonu, če še ne obstajajo
 
 const authRoutes = require('./routes/auth');
 const terminiRoutes = require('./routes/termini');
+const studentRoutes = require('./routes/student');
 
 const app = express();
 const PORT = 3000;
@@ -32,6 +33,7 @@ app.get('/', (req, res) => {
 
 app.use('/', authRoutes);
 app.use('/', terminiRoutes);
+app.use('/', studentRoutes);
 
 // Middleware, ki preveri, ali je uporabnik prijavljen
 function zahtevajPrijavo(req, res, next) {

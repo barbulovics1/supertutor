@@ -34,10 +34,17 @@ function izbrisiDostopnost(id, tutorId) {
   `).run(id, tutorId);
 }
 
+function najdiProsteTermineTutorja(tutorId) {
+  return db.prepare(`
+    SELECT * FROM termin WHERE tutor_id = ? AND status = 'prost' ORDER BY datum, zacetek
+  `).all(tutorId);
+}
+
 module.exports = {
   preveriPrekrivanje,
   ustvariDostopnost,
   najdiDostopnostiTutorja,
   najdiPoId,
-  izbrisiDostopnost
+  izbrisiDostopnost,
+  najdiProsteTermineTutorja
 };

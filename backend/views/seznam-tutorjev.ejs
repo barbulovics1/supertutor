@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+  <meta charset="UTF-8">
+  <title>Tutorji - SuperTutor</title>
+</head>
+<body>
+  <h1>Izberi tutorja</h1>
+  <p><a href="/odjava">Odjava</a></p>
+
+  <ul>
+    <% tutorji.forEach(t => { %>
+      <li><a href="/student/tutor/<%= t.id %>"><%= t.ime %> <%= t.priimek %></a></li>
+    <% }) %>
+  </ul>
+</body>
+</html>
