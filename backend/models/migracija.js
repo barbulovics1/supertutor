@@ -52,6 +52,15 @@ db.exec(`
     FOREIGN KEY (termin_id) REFERENCES termin(id),
     FOREIGN KEY (avtor_id) REFERENCES uporabnik(id)
   );
+
+  CREATE TABLE IF NOT EXISTS obvestilo (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    uporabnik_id INTEGER NOT NULL,
+    besedilo TEXT NOT NULL,
+    prebrano INTEGER DEFAULT 0,
+    ustvarjeno_ob TEXT NOT NULL,
+    FOREIGN KEY (uporabnik_id) REFERENCES uporabnik(id)
+  );
 `);
 
 console.log('Tabele so uspešno ustvarjene (ali že obstajajo).');

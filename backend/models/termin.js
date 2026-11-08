@@ -1,4 +1,5 @@
 const db = require('./database');
+const obvestilo = require('./obvestilo');
 
 function preveriPrekrivanje(tutorId, datum, zacetek, konec) {
   const prekrivanje = db.prepare(`
@@ -83,7 +84,11 @@ function izracunajPoznoOdpoved(datum, zacetek) {
 }
 
 function odpoviStudent(terminId, studentId) {
-  const t = db.prepare('SELECT * FROM termin WHERE id = ? AND student_id = ?').get(terminId, studentId);
+  const t = db.prepare(`
+    SELECT termin.*, uporabnik.ime AS student_ime, uporabnik.priimek AS student_priimek
+    FROM termin JOIN uporabnik ON termin.student_id = uporabnik.id
+    WHERE termin.id = ? AND termin.student_id = ?
+  `).get(terminId, studentId);
 
   if (!t || t.status !== 'potrjen') {
     return { uspeh: false };
@@ -97,6 +102,9 @@ function odpoviStudent(terminId, studentId) {
         nacin_izvedbe = NULL, lokacija_kontakt = NULL, pozna_odpoved = ?
     WHERE id = ?
   `).run(pozna, terminId);
+
+  const besedilo = `${t.student_ime} ${t.student_priimek} je odpovedal(a) termin ${t.datum} ob ${t.zacetek} (${pozna ? 'pozna' : 'pravočasna'} odpoved).`;
+  obvestilo.ustvari(t.tutor_id, besedilo);
 
   return { uspeh: true, pozna: !!pozna };
 }

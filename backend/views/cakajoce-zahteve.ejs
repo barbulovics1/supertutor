@@ -8,6 +8,17 @@
   <h1>Čakajoče zahteve</h1>
   <p><a href="/odjava">Odjava</a></p>
 
+  <% if (obvestila.length > 0) { %>
+    <div style="background: #ffeeba; padding: 10px;">
+      <h3>Nova obvestila</h3>
+      <ul>
+        <% obvestila.forEach(o => { %>
+          <li><%= o.besedilo %></li>
+        <% }) %>
+      </ul>
+    </div>
+  <% } %>
+
   <% if (zahteve.length === 0) { %>
     <p>Trenutno ni čakajočih zahtev.</p>
   <% } %>
