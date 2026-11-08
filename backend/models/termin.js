@@ -49,6 +49,17 @@ function oddajZahtevo(terminId, studentId, predmetId, teme, nacinIzvedbe, lokaci
   return stmt.run(studentId, predmetId, teme, nacinIzvedbe, lokacijaKontakt, terminId);
 }
 
+function najdiCakajoceZahteve(tutorId) {
+  return db.prepare(`
+    SELECT termin.*, predmet.naziv AS predmet_naziv, uporabnik.ime AS student_ime, uporabnik.priimek AS student_priimek
+    FROM termin
+    JOIN predmet ON termin.predmet_id = predmet.id
+    JOIN uporabnik ON termin.student_id = uporabnik.id
+    WHERE termin.tutor_id = ? AND termin.status = 'caka_potrditev'
+    ORDER BY termin.datum, termin.zacetek
+  `).all(tutorId);
+}
+
 module.exports = {
   preveriPrekrivanje,
   ustvariDostopnost,
@@ -56,5 +67,6 @@ module.exports = {
   najdiPoId,
   izbrisiDostopnost,
   najdiProsteTermineTutorja,
-  oddajZahtevo
+  oddajZahtevo,
+  najdiCakajoceZahteve
 };
