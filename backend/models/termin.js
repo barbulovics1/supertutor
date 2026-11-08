@@ -60,6 +60,21 @@ function najdiCakajoceZahteve(tutorId) {
   `).all(tutorId);
 }
 
+function potrdiZahtevo(terminId, tutorId) {
+  return db.prepare(`
+    UPDATE termin SET status = 'potrjen'
+    WHERE id = ? AND tutor_id = ? AND status = 'caka_potrditev'
+  `).run(terminId, tutorId);
+}
+
+function zavrniZahtevo(terminId, tutorId) {
+  return db.prepare(`
+    UPDATE termin
+    SET status = 'prost', student_id = NULL, predmet_id = NULL, teme = NULL, nacin_izvedbe = NULL, lokacija_kontakt = NULL
+    WHERE id = ? AND tutor_id = ? AND status = 'caka_potrditev'
+  `).run(terminId, tutorId);
+}
+
 module.exports = {
   preveriPrekrivanje,
   ustvariDostopnost,
@@ -68,5 +83,7 @@ module.exports = {
   izbrisiDostopnost,
   najdiProsteTermineTutorja,
   oddajZahtevo,
-  najdiCakajoceZahteve
+  najdiCakajoceZahteve,
+  potrdiZahtevo,
+  zavrniZahtevo
 };
