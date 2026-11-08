@@ -63,7 +63,7 @@ router.post('/student/zahteva/:terminId', zahtevajStudenta, (req, res) => {
   );
 
   if (rezultat.changes === 0) {
-    return res.send('Ta termin je medtem postal nedostopen. Izberi drugega.');
+    return res.render('zahteva-termin-nedostopen', {});
   }
 
   res.send('Zahteva je bila uspešno poslana!');
