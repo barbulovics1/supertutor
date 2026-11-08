@@ -39,4 +39,38 @@ router.post('/registracija', (req, res) => {
   res.send('Registracija uspešna! (prijava bo dodana v naslednjem koraku)');
 });
 
+
+
+// Prikaz obrazca za prijavo
+router.get('/prijava', (req, res) => {
+  res.render('prijava', { napaka: null });
+});
+
+// Obdelava prijave
+router.post('/prijava', (req, res) => {
+  const { email, geslo } = req.body;
+
+  const najdeniUporabnik = uporabnik.najdiPoEmailu(email);
+
+  if (!najdeniUporabnik || !bcrypt.compareSync(geslo, najdeniUporabnik.geslo_hash)) {
+    return res.render('prijava', { napaka: 'Napačni podatki za prijavo.' });
+  }
+
+  // Shrani uporabnika v sejo
+  req.session.uporabnik = {
+    id: najdeniUporabnik.id,
+    ime: najdeniUporabnik.ime,
+    vloga: najdeniUporabnik.vloga
+  };
+
+  // Preusmeritev glede na vlogo
+  if (najdeniUporabnik.vloga === 'student') {
+    return res.redirect('/student/pregled');
+  } else if (najdeniUporabnik.vloga === 'tutor') {
+    return res.redirect('/tutor/pregled');
+  } else {
+    return res.redirect('/koordinator/pregled');
+  }
+});
+
 module.exports = router;

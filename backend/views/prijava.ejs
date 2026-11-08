@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+  <meta charset="UTF-8">
+  <title>Prijava - SuperTutor</title>
+</head>
+<body>
+  <h1>Prijava</h1>
+
+  <% if (napaka) { %>
+    <p style="color: red;"><%= napaka %></p>
+  <% } %>
+
+  <form method="POST" action="/prijava">
+    <label>E-pošta: <input type="email" name="email" required></label><br>
+    <label>Geslo: <input type="password" name="geslo" required></label><br>
+    <button type="submit">Prijava</button>
+  </form>
+
+  <p><a href="/registracija">Še nimaš računa? Registriraj se.</a></p>
+</body>
+</html>
