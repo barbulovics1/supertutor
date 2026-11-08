@@ -3,6 +3,7 @@ const session = require('express-session');
 const path = require('path');
 require('./models/migracija'); // ustvari tabele ob zagonu, če še ne obstajajo
 
+const authRoutes = require('./routes/auth');
 
 const app = express();
 const PORT = 3000;
@@ -27,6 +28,8 @@ app.use(session({
 app.get('/', (req, res) => {
   res.send('SuperTutor strežnik deluje!');
 });
+
+app.use('/', authRoutes);
 
 app.listen(PORT, () => {
   console.log(`Strežnik teče na http://localhost:${PORT}`);
