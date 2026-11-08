@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const termin = require('../models/termin');
+const obvestilo = require('../models/obvestilo');
 
 function zahtevajTutorja(req, res, next) {
   if (!req.session.uporabnik || req.session.uporabnik.vloga !== 'tutor') {
@@ -51,7 +52,9 @@ router.post('/tutor/dostopnost/:id/izbrisi', zahtevajTutorja, (req, res) => {
 
 router.get('/tutor/zahteve', zahtevajTutorja, (req, res) => {
   const zahteve = termin.najdiCakajoceZahteve(req.session.uporabnik.id);
-  res.render('cakajoce-zahteve', { zahteve });
+  const obvestila = obvestilo.najdiNeprebrana(req.session.uporabnik.id);
+  obvestilo.oznaciVsaPrebrana(req.session.uporabnik.id);
+  res.render('cakajoce-zahteve', { zahteve, obvestila });
 });
 
 
