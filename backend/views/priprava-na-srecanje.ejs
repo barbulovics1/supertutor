@@ -23,5 +23,15 @@
       <% }) %>
     </ul>
   <% } %>
+
+  <% if (preteklo) { %>
+    <h2>Dodaj zapisek</h2>
+    <form method="POST" action="/tutor/priprava/<%= termin.id %>/zapisek">
+      <textarea name="besedilo" rows="5" cols="40" required placeholder="Kako se študent najbolje uči, kaj mu pomaga, na čem delati naslednjič..."></textarea><br>
+      <button type="submit">Shrani zapisek</button>
+    </form>
+  <% } else { %>
+    <p><em>Zapisek bo mogoče dodati po tem, ko termin mine.</em></p>
+  <% } %>
 </body>
 </html>

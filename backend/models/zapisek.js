@@ -8,4 +8,11 @@ function najdiZapiskeZaStudenta(studentId) {
   `).all(studentId);
 }
 
-module.exports = { najdiZapiskeZaStudenta };
+function ustvari(terminId, avtorId, besedilo) {
+  return db.prepare(`
+    INSERT INTO zapisek (termin_id, avtor_id, besedilo, ustvarjeno_ob)
+    VALUES (?, ?, ?, datetime('now'))
+  `).run(terminId, avtorId, besedilo);
+}
+
+module.exports = { najdiZapiskeZaStudenta, ustvari };
