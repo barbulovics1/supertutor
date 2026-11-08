@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+  <meta charset="UTF-8">
+  <title>Prosti termini - SuperTutor</title>
+</head>
+<body>
+  <h1>Prosti termini - <%= tutor.ime %> <%= tutor.priimek %></h1>
+  <p><a href="/student/tutorji">Nazaj na seznam tutorjev</a></p>
+
+  <% if (termini.length === 0) { %>
+    <p>Ta tutor trenutno nima prostih terminov.</p>
+  <% } %>
+
+  <ul>
+    <% termini.forEach(t => { %>
+      <li><%= t.datum %>, <%= t.zacetek %>–<%= t.konec %></li>
+    <% }) %>
+  </ul>
+</body>
+</html>
