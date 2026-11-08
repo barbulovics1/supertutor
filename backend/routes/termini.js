@@ -54,4 +54,15 @@ router.get('/tutor/zahteve', zahtevajTutorja, (req, res) => {
   res.render('cakajoce-zahteve', { zahteve });
 });
 
+
+router.post('/tutor/zahteve/:id/potrdi', zahtevajTutorja, (req, res) => {
+  termin.potrdiZahtevo(req.params.id, req.session.uporabnik.id);
+  res.redirect('/tutor/zahteve');
+});
+
+router.post('/tutor/zahteve/:id/zavrni', zahtevajTutorja, (req, res) => {
+  termin.zavrniZahtevo(req.params.id, req.session.uporabnik.id);
+  res.redirect('/tutor/zahteve');
+});
+
 module.exports = router;

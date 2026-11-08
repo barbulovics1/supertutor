@@ -19,7 +19,14 @@
         Študent: <%= z.student_ime %> <%= z.student_priimek %><br>
         Predmet: <%= z.predmet_naziv %><br>
         Teme: <%= z.teme %><br>
-        Način izvedbe: <%= z.nacin_izvedbe %> (<%= z.lokacija_kontakt %>)
+        Način izvedbe: <%= z.nacin_izvedbe %> (<%= z.lokacija_kontakt %>)<br>
+
+        <form method="POST" action="/tutor/zahteve/<%= z.id %>/potrdi" style="display:inline;">
+          <button type="submit">Potrdi</button>
+        </form>
+        <form method="POST" action="/tutor/zahteve/<%= z.id %>/zavrni" style="display:inline;">
+          <button type="submit">Zavrni</button>
+        </form>
       </li>
       <hr>
     <% }) %>
