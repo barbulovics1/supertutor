@@ -31,3 +31,17 @@ if (!obstojeciTutor) {
 } else {
   console.log('Testni tutor že obstaja.');
 }
+
+const testniTutor = uporabnik.najdiPoEmailu('tutor1@student.um.si');
+
+if (testniTutor) {
+  const vsiPredmeti = db.prepare('SELECT id FROM predmet').all();
+  const obstojecaPovezava = db.prepare('SELECT * FROM tutor_predmet WHERE tutor_id = ?').get(testniTutor.id);
+
+  if (!obstojecaPovezava && vsiPredmeti.length > 0) {
+    const povezi = db.prepare('INSERT INTO tutor_predmet (tutor_id, predmet_id) VALUES (?, ?)');
+    povezi.run(testniTutor.id, vsiPredmeti[0].id);
+    povezi.run(testniTutor.id, vsiPredmeti[1].id);
+    console.log('Testni tutor je povezan z dvema predmetoma.');
+  }
+}

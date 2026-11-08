@@ -21,4 +21,52 @@ router.get('/student/tutor/:id', zahtevajStudenta, (req, res) => {
   res.render('prosti-termini', { tutor, termini });
 });
 
+const predmet = require('../models/predmet');
+
+router.get('/student/zahteva/:terminId', zahtevajStudenta, (req, res) => {
+  const t = termin.najdiPoId(req.params.terminId);
+
+  if (!t || t.status !== 'prost') {
+    return res.redirect('/student/tutorji');
+  }
+
+  const predmeti = predmet.najdiPredmetovTutorja(t.tutor_id);
+  res.render('zahteva-termin', { termin: t, predmeti, napaka: null });
+});
+
+router.post('/student/zahteva/:terminId', zahtevajStudenta, (req, res) => {
+  const { predmet_id, teme, nacin_izvedbe, lokacija_kontakt } = req.body;
+  const t = termin.najdiPoId(req.params.terminId);
+
+  if (!t || t.status !== 'prost') {
+    return res.redirect('/student/tutorji');
+  }
+
+  if (!teme || teme.trim() === '') {
+    const predmeti = predmet.najdiPredmetovTutorja(t.tutor_id);
+    return res.render('zahteva-termin', { termin: t, predmeti, napaka: 'Polje za teme je obvezno.' });
+  }
+
+  if (nacin_izvedbe !== 'v_zivo' && nacin_izvedbe !== 'online') {
+    const predmeti = predmet.najdiPredmetovTutorja(t.tutor_id);
+    return res.render('zahteva-termin', { termin: t, predmeti, napaka: 'Izberi način izvedbe.' });
+  }
+
+  if (!lokacija_kontakt || lokacija_kontakt.trim() === '') {
+    const predmeti = predmet.najdiPredmetovTutorja(t.tutor_id);
+    const polje = nacin_izvedbe === 'v_zivo' ? 'Lokacija' : 'Kontakt';
+    return res.render('zahteva-termin', { termin: t, predmeti, napaka: `${polje} je obvezen podatek.` });
+  }
+
+  const rezultat = termin.oddajZahtevo(
+    t.id, req.session.uporabnik.id, predmet_id, teme, nacin_izvedbe, lokacija_kontakt
+  );
+
+  if (rezultat.changes === 0) {
+    return res.send('Ta termin je medtem postal nedostopen. Izberi drugega.');
+  }
+
+  res.send('Zahteva je bila uspešno poslana!');
+});
+
 module.exports = router;

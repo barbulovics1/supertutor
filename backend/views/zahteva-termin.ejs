@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+  <meta charset="UTF-8">
+  <title>Zahteva za termin - SuperTutor</title>
+</head>
+<body>
+  <h1>Zahteva za termin</h1>
+  <p><%= termin.datum %>, <%= termin.zacetek %>–<%= termin.konec %></p>
+
+  <% if (napaka) { %>
+    <p style="color: red;"><%= napaka %></p>
+  <% } %>
+
+  <form method="POST" action="/student/zahteva/<%= termin.id %>">
+    <label>Predmet:
+      <select name="predmet_id" required>
+        <option value="">-- izberi --</option>
+        <% predmeti.forEach(p => { %>
+          <option value="<%= p.id %>"><%= p.naziv %></option>
+        <% }) %>
+      </select>
+    </label><br>
+
+    <label>Teme, s katerimi potrebuješ pomoč:<br>
+      <textarea name="teme" required></textarea>
+    </label><br>
+
+    <label><input type="radio" name="nacin_izvedbe" value="v_zivo" required> V živo</label>
+    <label><input type="radio" name="nacin_izvedbe" value="online"> Online</label><br>
+
+    <label>Lokacija (če v živo) / Kontakt (če online):
+      <input type="text" name="lokacija_kontakt">
+    </label><br>
+
+    <button type="submit">Pošlji zahtevo</button>
+  </form>
+</body>
+</html>
