@@ -40,11 +40,21 @@ function najdiProsteTermineTutorja(tutorId) {
   `).all(tutorId);
 }
 
+function oddajZahtevo(terminId, studentId, predmetId, teme, nacinIzvedbe, lokacijaKontakt) {
+  const stmt = db.prepare(`
+    UPDATE termin
+    SET student_id = ?, predmet_id = ?, teme = ?, nacin_izvedbe = ?, lokacija_kontakt = ?, status = 'caka_potrditev'
+    WHERE id = ? AND status = 'prost'
+  `);
+  return stmt.run(studentId, predmetId, teme, nacinIzvedbe, lokacijaKontakt, terminId);
+}
+
 module.exports = {
   preveriPrekrivanje,
   ustvariDostopnost,
   najdiDostopnostiTutorja,
   najdiPoId,
   izbrisiDostopnost,
-  najdiProsteTermineTutorja
+  najdiProsteTermineTutorja,
+  oddajZahtevo
 };

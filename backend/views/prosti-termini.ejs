@@ -14,7 +14,10 @@
 
   <ul>
     <% termini.forEach(t => { %>
-      <li><%= t.datum %>, <%= t.zacetek %>–<%= t.konec %></li>
+      <li>
+        <%= t.datum %>, <%= t.zacetek %>–<%= t.konec %>
+        <a href="/student/zahteva/<%= t.id %>">Zahtevaj termin</a>
+      </li>
     <% }) %>
   </ul>
 </body>
