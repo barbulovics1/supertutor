@@ -77,7 +77,19 @@ router.get('/tutor/priprava/:terminId', zahtevajTutorja, (req, res) => {
   }
 
   const zapiski = zapisek.najdiZapiskeZaStudenta(t.student_id);
-  res.render('priprava-na-srecanje', { termin: t, zapiski });
+  const preteklo = termin.jePreteklo(t.id);
+  res.render('priprava-na-srecanje', { termin: t, zapiski, preteklo });
+});
+
+router.post('/tutor/priprava/:terminId/zapisek', zahtevajTutorja, (req, res) => {
+  const t = termin.najdiPotrjenTermin(req.params.terminId, req.session.uporabnik.id);
+
+  if (!t || !termin.jePreteklo(t.id)) {
+    return res.redirect('/tutor/zahteve');
+  }
+
+  zapisek.ustvari(t.id, req.session.uporabnik.id, req.body.besedilo);
+  res.redirect(`/tutor/priprava/${t.id}`);
 });
 
 module.exports = router;

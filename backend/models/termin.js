@@ -130,6 +130,13 @@ function najdiPotrjenTermin(terminId, tutorId) {
   `).get(terminId, tutorId);
 }
 
+function jePreteklo(terminId) {
+  const t = db.prepare('SELECT datum, konec FROM termin WHERE id = ?').get(terminId);
+  if (!t) return false;
+  const terminKonec = new Date(`${t.datum}T${t.konec}`);
+  return terminKonec < new Date();
+}
+
 module.exports = {
   preveriPrekrivanje,
   ustvariDostopnost,
@@ -144,5 +151,6 @@ module.exports = {
   izracunajPoznoOdpoved,
   odpoviStudent,
   najdiPotrjeneTermineStudenta,
-  najdiPotrjenTermin
+  najdiPotrjenTermin,
+  jePreteklo
 };
