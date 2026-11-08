@@ -120,6 +120,16 @@ function najdiPotrjeneTermineStudenta(studentId) {
   `).all(studentId);
 }
 
+function najdiPotrjenTermin(terminId, tutorId) {
+  return db.prepare(`
+    SELECT termin.*, predmet.naziv AS predmet_naziv, uporabnik.ime AS student_ime, uporabnik.priimek AS student_priimek
+    FROM termin
+    JOIN predmet ON termin.predmet_id = predmet.id
+    JOIN uporabnik ON termin.student_id = uporabnik.id
+    WHERE termin.id = ? AND termin.tutor_id = ? AND termin.status = 'potrjen'
+  `).get(terminId, tutorId);
+}
+
 module.exports = {
   preveriPrekrivanje,
   ustvariDostopnost,
@@ -133,5 +143,6 @@ module.exports = {
   zavrniZahtevo,
   izracunajPoznoOdpoved,
   odpoviStudent,
-  najdiPotrjeneTermineStudenta
+  najdiPotrjeneTermineStudenta,
+  najdiPotrjenTermin
 };
