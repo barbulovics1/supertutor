@@ -31,6 +31,20 @@ router.post('/tutor/dostopnost', zahtevajTutorja, (req, res) => {
 });
 
 router.post('/tutor/dostopnost/:id/izbrisi', zahtevajTutorja, (req, res) => {
+  const obstojeciTermin = termin.najdiPoId(req.params.id);
+
+  if (!obstojeciTermin || obstojeciTermin.tutor_id !== req.session.uporabnik.id) {
+    return res.redirect('/tutor/dostopnost');
+  }
+
+  if (obstojeciTermin.status !== 'prost') {
+    const dostopnosti = termin.najdiDostopnostiTutorja(req.session.uporabnik.id);
+    return res.render('tutor-dostopnost', {
+      napaka: 'Tega termina ni mogoče izbrisati, ker je zanj že oddana zahteva.',
+      dostopnosti
+    });
+  }
+
   termin.izbrisiDostopnost(req.params.id, req.session.uporabnik.id);
   res.redirect('/tutor/dostopnost');
 });
