@@ -31,6 +31,11 @@ app.get('/', (req, res) => {
 
 app.use('/', authRoutes);
 
+app.get('/student/pregled', (req, res) => res.send('Dobrodošel, študent!'));
+app.get('/tutor/pregled', (req, res) => res.send('Dobrodošel, tutor!'));
+app.get('/koordinator/pregled', (req, res) => res.send('Dobrodošel, koordinator!'));
+
+
 app.listen(PORT, () => {
   console.log(`Strežnik teče na http://localhost:${PORT}`);
 });
