@@ -69,4 +69,14 @@ router.post('/student/zahteva/:terminId', zahtevajStudenta, (req, res) => {
   res.send('Zahteva je bila uspešno poslana!');
 });
 
+router.get('/student/termini', zahtevajStudenta, (req, res) => {
+  const termini = termin.najdiPotrjeneTermineStudenta(req.session.uporabnik.id);
+  res.render('moji-termini', { termini });
+});
+
+router.post('/student/termin/:id/odpovej', zahtevajStudenta, (req, res) => {
+  const rezultat = termin.odpoviStudent(req.params.id, req.session.uporabnik.id);
+  res.redirect('/student/termini');
+});
+
 module.exports = router;

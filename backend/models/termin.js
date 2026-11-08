@@ -75,6 +75,43 @@ function zavrniZahtevo(terminId, tutorId) {
   `).run(terminId, tutorId);
 }
 
+function izracunajPoznoOdpoved(datum, zacetek) {
+  const terminDatum = new Date(`${datum}T${zacetek}`);
+  const sedaj = new Date();
+  const razlikaUrah = (terminDatum - sedaj) / (1000 * 60 * 60);
+  return razlikaUrah < 24;
+}
+
+function odpoviStudent(terminId, studentId) {
+  const t = db.prepare('SELECT * FROM termin WHERE id = ? AND student_id = ?').get(terminId, studentId);
+
+  if (!t || t.status !== 'potrjen') {
+    return { uspeh: false };
+  }
+
+  const pozna = izracunajPoznoOdpoved(t.datum, t.zacetek) ? 1 : 0;
+
+  db.prepare(`
+    UPDATE termin
+    SET status = 'prost', student_id = NULL, predmet_id = NULL, teme = NULL,
+        nacin_izvedbe = NULL, lokacija_kontakt = NULL, pozna_odpoved = ?
+    WHERE id = ?
+  `).run(pozna, terminId);
+
+  return { uspeh: true, pozna: !!pozna };
+}
+
+function najdiPotrjeneTermineStudenta(studentId) {
+  return db.prepare(`
+    SELECT termin.*, predmet.naziv AS predmet_naziv, uporabnik.ime AS tutor_ime, uporabnik.priimek AS tutor_priimek
+    FROM termin
+    JOIN predmet ON termin.predmet_id = predmet.id
+    JOIN uporabnik ON termin.tutor_id = uporabnik.id
+    WHERE termin.student_id = ? AND termin.status = 'potrjen'
+    ORDER BY termin.datum, termin.zacetek
+  `).all(studentId);
+}
+
 module.exports = {
   preveriPrekrivanje,
   ustvariDostopnost,
@@ -85,5 +122,8 @@ module.exports = {
   oddajZahtevo,
   najdiCakajoceZahteve,
   potrdiZahtevo,
-  zavrniZahtevo
+  zavrniZahtevo,
+  izracunajPoznoOdpoved,
+  odpoviStudent,
+  najdiPotrjeneTermineStudenta
 };
