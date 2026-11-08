@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+  <meta charset="UTF-8">
+  <title>Moja dostopnost - SuperTutor</title>
+</head>
+<body>
+  <h1>Moja dostopnost</h1>
+  <p><a href="/odjava">Odjava</a></p>
+
+  <% if (napaka) { %>
+    <p style="color: red;"><%= napaka %></p>
+  <% } %>
+
+  <form method="POST" action="/tutor/dostopnost">
+    <label>Datum: <input type="date" name="datum" required></label><br>
+    <label>Začetek: <input type="time" name="zacetek" required></label><br>
+    <label>Konec: <input type="time" name="konec" required></label><br>
+    <button type="submit">Dodaj dostopnost</button>
+  </form>
+
+  <h2>Trenutna dostopnost</h2>
+  <ul>
+    <% dostopnosti.forEach(d => { %>
+      <li>
+        <%= d.datum %>, <%= d.zacetek %>–<%= d.konec %> (<%= d.status %>)
+        <% if (d.status === 'prost') { %>
+          <form method="POST" action="/tutor/dostopnost/<%= d.id %>/izbrisi" style="display:inline;">
+            <button type="submit">Izbriši</button>
+          </form>
+        <% } %>
+      </li>
+    <% }) %>
+  </ul>
+</body>
+</html>
