@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+  <meta charset="UTF-8">
+  <title>Moji termini - SuperTutor</title>
+</head>
+<body>
+  <h1>Moji potrjeni termini</h1>
+  <p><a href="/odjava">Odjava</a></p>
+
+  <% if (termini.length === 0) { %>
+    <p>Trenutno nimaš potrjenih terminov.</p>
+  <% } %>
+
+  <ul>
+    <% termini.forEach(t => { %>
+      <li>
+        <%= t.datum %>, <%= t.zacetek %>–<%= t.konec %> - <%= t.predmet_naziv %>
+        pri <%= t.tutor_ime %> <%= t.tutor_priimek %>
+
+        <form method="POST" action="/student/termin/<%= t.id %>/odpovej" style="display:inline;">
+          <button type="submit">Odpovej</button>
+        </form>
+      </li>
+    <% }) %>
+  </ul>
+</body>
+</html>
