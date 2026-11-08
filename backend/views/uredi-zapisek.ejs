@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+  <meta charset="UTF-8">
+  <title>Uredi zapisek - SuperTutor</title>
+</head>
+<body>
+  <h1>Uredi zapisek</h1>
+
+  <form method="POST" action="/tutor/zapisek/<%= zapisek.id %>/uredi">
+    <textarea name="besedilo" rows="5" cols="40" required><%= zapisek.besedilo %></textarea><br>
+    <button type="submit">Shrani spremembe</button>
+  </form>
+</body>
+</html>

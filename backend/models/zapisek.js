@@ -15,4 +15,14 @@ function ustvari(terminId, avtorId, besedilo) {
   `).run(terminId, avtorId, besedilo);
 }
 
-module.exports = { najdiZapiskeZaStudenta, ustvari };
+function najdiPoId(id, avtorId) {
+  return db.prepare('SELECT * FROM zapisek WHERE id = ? AND avtor_id = ?').get(id, avtorId);
+}
+
+function posodobi(id, avtorId, besedilo) {
+  return db.prepare(`
+    UPDATE zapisek SET besedilo = ? WHERE id = ? AND avtor_id = ?
+  `).run(besedilo, id, avtorId);
+}
+
+module.exports = { najdiZapiskeZaStudenta, ustvari, najdiPoId, posodobi };
