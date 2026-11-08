@@ -31,9 +31,17 @@ app.get('/', (req, res) => {
 
 app.use('/', authRoutes);
 
-app.get('/student/pregled', (req, res) => res.send('Dobrodošel, študent!'));
-app.get('/tutor/pregled', (req, res) => res.send('Dobrodošel, tutor!'));
-app.get('/koordinator/pregled', (req, res) => res.send('Dobrodošel, koordinator!'));
+// Middleware, ki preveri, ali je uporabnik prijavljen
+function zahtevajPrijavo(req, res, next) {
+  if (!req.session.uporabnik) {
+    return res.redirect('/prijava');
+  }
+  next();
+}
+
+app.get('/student/pregled', zahtevajPrijavo, (req, res) => res.send('Dobrodošel, študent! <a href="/odjava">Odjava</a>'));
+app.get('/tutor/pregled', zahtevajPrijavo, (req, res) => res.send('Dobrodošel, tutor! <a href="/odjava">Odjava</a>'));
+app.get('/koordinator/pregled', zahtevajPrijavo, (req, res) => res.send('Dobrodošel, koordinator! <a href="/odjava">Odjava</a>'));
 
 
 app.listen(PORT, () => {

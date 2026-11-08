@@ -73,4 +73,11 @@ router.post('/prijava', (req, res) => {
   }
 });
 
+// Odjava
+router.get('/odjava', (req, res) => {
+  req.session.destroy(() => {
+    res.redirect('/prijava');
+  });
+});
+
 module.exports = router;
