@@ -137,6 +137,17 @@ function jePreteklo(terminId) {
   return terminKonec < new Date();
 }
 
+function najdiPotrjeneTermineTutorja(tutorId) {
+  return db.prepare(`
+    SELECT termin.*, predmet.naziv AS predmet_naziv, uporabnik.ime AS student_ime, uporabnik.priimek AS student_priimek
+    FROM termin
+    JOIN predmet ON termin.predmet_id = predmet.id
+    JOIN uporabnik ON termin.student_id = uporabnik.id
+    WHERE termin.tutor_id = ? AND termin.status = 'potrjen'
+    ORDER BY termin.datum, termin.zacetek
+  `).all(tutorId);
+}
+
 module.exports = {
   preveriPrekrivanje,
   ustvariDostopnost,
@@ -152,5 +163,6 @@ module.exports = {
   odpoviStudent,
   najdiPotrjeneTermineStudenta,
   najdiPotrjenTermin,
-  jePreteklo
+  jePreteklo,
+  najdiPotrjeneTermineTutorja
 };

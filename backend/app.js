@@ -28,7 +28,10 @@ app.use(session({
 
 // Testna začetna stran
 app.get('/', (req, res) => {
-  res.send('SuperTutor strežnik deluje!');
+  res.send(`
+    SuperTutor strežnik deluje!<br>
+    <a href="/prijava">Prijava</a> | <a href="/registracija">Registracija</a>
+  `);
 });
 
 app.use('/', authRoutes);
@@ -43,8 +46,24 @@ function zahtevajPrijavo(req, res, next) {
   next();
 }
 
-app.get('/student/pregled', zahtevajPrijavo, (req, res) => res.send('Dobrodošel, študent! <a href="/odjava">Odjava</a>'));
-app.get('/tutor/pregled', zahtevajPrijavo, (req, res) => res.send('Dobrodošel, tutor! <a href="/odjava">Odjava</a>'));
+app.get('/student/pregled', zahtevajPrijavo, (req, res) => {
+  res.send(`
+    Dobrodošel, ${req.session.uporabnik.ime}!<br>
+    <a href="/student/tutorji">Poišči tutorja</a> |
+    <a href="/student/termini">Moji termini</a> |
+    <a href="/odjava">Odjava</a>
+  `);
+});
+
+app.get('/tutor/pregled', zahtevajPrijavo, (req, res) => {
+  res.send(`
+    Dobrodošel, ${req.session.uporabnik.ime}!<br>
+    <a href="/tutor/dostopnost">Moja dostopnost</a> |
+    <a href="/tutor/zahteve">Čakajoče zahteve</a> |
+    <a href="/odjava">Odjava</a>
+  `);
+});
+
 app.get('/koordinator/pregled', zahtevajPrijavo, (req, res) => res.send('Dobrodošel, koordinator! <a href="/odjava">Odjava</a>'));
 
 
