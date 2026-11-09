@@ -53,9 +53,10 @@ router.post('/tutor/dostopnost/:id/izbrisi', zahtevajTutorja, (req, res) => {
 
 router.get('/tutor/zahteve', zahtevajTutorja, (req, res) => {
   const zahteve = termin.najdiCakajoceZahteve(req.session.uporabnik.id);
+  const potrjeniTermini = termin.najdiPotrjeneTermineTutorja(req.session.uporabnik.id);
   const obvestila = obvestilo.najdiNeprebrana(req.session.uporabnik.id);
   obvestilo.oznaciVsaPrebrana(req.session.uporabnik.id);
-  res.render('cakajoce-zahteve', { zahteve, obvestila });
+  res.render('cakajoce-zahteve', { zahteve, potrjeniTermini, obvestila });
 });
 
 
