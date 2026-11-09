@@ -19,7 +19,12 @@
   <% } else { %>
     <ul>
       <% zapiski.forEach(z => { %>
-        <li><%= z.ustvarjeno_ob %>: <%= z.besedilo %></li>
+        <li>
+          <%= z.ustvarjeno_ob %>: <%= z.besedilo %>
+          <% if (z.avtor_id === termin.tutor_id) { %>
+            <a href="/tutor/zapisek/<%= z.id %>/uredi">Uredi</a>
+          <% } %>
+        </li>
       <% }) %>
     </ul>
   <% } %>

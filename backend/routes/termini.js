@@ -92,4 +92,25 @@ router.post('/tutor/priprava/:terminId/zapisek', zahtevajTutorja, (req, res) => 
   res.redirect(`/tutor/priprava/${t.id}`);
 });
 
+router.get('/tutor/zapisek/:id/uredi', zahtevajTutorja, (req, res) => {
+  const z = zapisek.najdiPoId(req.params.id, req.session.uporabnik.id);
+
+  if (!z) {
+    return res.redirect('/tutor/zahteve');
+  }
+
+  res.render('uredi-zapisek', { zapisek: z });
+});
+
+router.post('/tutor/zapisek/:id/uredi', zahtevajTutorja, (req, res) => {
+  const z = zapisek.najdiPoId(req.params.id, req.session.uporabnik.id);
+
+  if (!z) {
+    return res.redirect('/tutor/zahteve');
+  }
+
+  zapisek.posodobi(req.params.id, req.session.uporabnik.id, req.body.besedilo);
+  res.redirect(`/tutor/priprava/${z.termin_id}`);
+});
+
 module.exports = router;
